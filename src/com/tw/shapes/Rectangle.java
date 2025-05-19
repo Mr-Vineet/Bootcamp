@@ -1,6 +1,6 @@
 package com.tw.shapes;
 
-public class Rectangle {
+public class Rectangle implements ClosedShapes {
     private final int length;
     private final int breadth;
 
@@ -9,7 +9,13 @@ public class Rectangle {
         this.breadth = breadth;
     }
 
+    @Override
     public int area() {
         return  this.length * this.breadth;
+    }
+
+    @Override
+    public int perimeter() {
+        return 2 * (length + breadth);
     }
 }
