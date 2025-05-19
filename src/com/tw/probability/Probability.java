@@ -1,26 +1,56 @@
 package com.tw.probability;
 
-import java.util.List;
+import java.util.Objects;
 
 public class Probability {
 
-    public static double favour(List<String> outcomes, String target) {
-        int appeared = Probability.occurrences(outcomes, target);
-        return (double) appeared / outcomes.size();
+    private final double value;
+
+    private Probability(double value) {
+        this.value = value;
     }
 
-    public static double disFavour(List<String> outcomes, String target) {
-        return 1 - Probability.favour(outcomes, target);
-    }
-
-    private static int occurrences(List<String> outcomes, String target) {
-        int occurred = 0;
-        for (String outcome : outcomes) {
-            if (outcome.equals(target)) {
-                occurred++;
-            }
+    public static Probability calculateProbability(double sampleCount, double occurrence) throws Exception {
+        if (occurrence < 0 || sampleCount < 0) {
+            throw new Exception("Occurrence or sample count can't be lesser than zero!");
         }
-        return occurred;
+
+        if (occurrence > sampleCount) {
+            throw new Exception("Occurrence can't be greater than sample count!");
+        }
+
+        return new Probability(occurrence / sampleCount);
     }
 
+    public static Probability createProbability(double value) throws Exception {
+        if (value < 0 || value > 1) {
+            throw new Exception("Probability should be between 0 and 1");
+        }
+
+        return new Probability(value);
+    }
+
+    public Probability compliment() {
+        return new Probability(1 - this.value);
+    }
+
+    public Probability and(Probability p) throws Exception {
+        return Probability.createProbability(p.value * value);
+    }
+
+    public Probability or(Probability p) throws Exception {
+        return Probability.createProbability(value + p.value - this.and(p).value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Probability that = (Probability) o;
+        return Double.compare(value, that.value) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
+    }
 }
