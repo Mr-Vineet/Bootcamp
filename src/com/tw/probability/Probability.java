@@ -30,8 +30,8 @@ public class Probability {
         return new Probability(value);
     }
 
-    public Probability compliment() {
-        return new Probability(1 - this.value);
+    public Probability compliment() throws Exception {
+        return Probability.createProbability(1 - this.value);
     }
 
     public Probability and(Probability p) throws Exception {
@@ -46,7 +46,7 @@ public class Probability {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Probability that = (Probability) o;
-        return Double.compare(value, that.value) == 0;
+        return Math.abs(value-that.value) < 0.01;
     }
 
     @Override
