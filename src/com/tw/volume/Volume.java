@@ -11,18 +11,20 @@ public class Volume {
         this.value = value;
     }
 
-    public static Volume gallons(double value) throws InvalidValueException {
-        if(value < 0) {
+    private static Volume getVolume(double value, double factor) throws InvalidValueException {
+        if (value < 0) {
             throw new InvalidValueException();
         }
-        return new Volume(value * 3.78);
+        return new Volume(value * factor);
     }
 
+    public static Volume gallons(double value) throws InvalidValueException {
+        return getVolume(value, 3.78);
+    }
+
+
     public static Volume liters(double value) throws InvalidValueException {
-        if(value < 0) {
-            throw new InvalidValueException();
-        }
-        return new Volume(value);
+        return getVolume(value, 1);
     }
 
     @Override
